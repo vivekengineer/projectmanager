@@ -1,0 +1,120 @@
+<form #viewProjectForm="ngForm" novalidate>
+    <div class="container">
+        <div class="row">
+            <div class="form-group row">
+                <div class="col-md-1">
+                    <label for="projectName" class="col-sm-2 col-form-label">Project:</label>
+                </div>
+                <div class="col-md-6">
+                        <input type="text" class="form-control" id="searchProject" name="searchProject" #searchProject="ngModel" [(ngModel)]="searchProjects" placeholder="Search Project">    
+                    </div>
+                <div class="col-md-3">
+                    <button type="button" class="col-sm-4  btn btn-danger" style="border-radius: 45%;" (click)=getProjectPopup()>Search</button>
+                </div>
+                <button type="button" id="projectModalhide" class="btn btn-primary" style="display: none;" data-toggle="modal" data-target="#projectModal"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="col-form-label">Sort Task By:</label>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary" (click)=sortByStartDate()>Start Date</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary" (click)=sortByEndDate()>End Date</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary" (click)=sortByPriority()>Priority</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary" (click)=sortByStatus()>Completed</button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <ul *ngFor="let task of taskList; let i = index">
+            <div class="row">
+
+                <label class="col-md-2">Task</label>
+                <label class="col-md-2">Parent</label>
+                <label class="col-md-2">Priority</label>
+                <label class="col-md-2">Start</label>
+                <label class="col-md-2">End</label>
+
+            </div>
+            <div class="row">
+                <div class="col-md-2">{{task.taskName}}</div>
+                <div class="col-md-2">{{task.parentTaskName}}</div>
+                <div class="col-md-2">{{task.priority}}</div>
+                <div class="col-md-2">{{task.startDate | date:'dd-MM-yyyy'}}</div>
+                <div class="col-md-2">{{task.endDate | date:'dd-MM-yyyy'}}</div>
+                <div *ngIf="task.status === 'A'">
+                    <button type="button" (click)="editTask(task)" class="btn btn-success">Edit</button>
+                    <button type="button" class="btn btn-success" (click)="endTask(task)">End Task</button>
+                </div>
+            </div>
+            <hr>
+        </ul>
+
+
+    </div>
+</form>
+<!-- Modal -->
+<div class="modal fade" id="projectModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Select Project</h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="height:450px; overflow-y: scroll">
+                <div class="row list-group-item" *ngFor="let item of projectsList">
+
+                    <div class="col-md-12" style="background-color: rgb(228, 224, 224);">
+                        <br/>
+                        <strong>
+                            <span class="col-form-label">
+                                <button type="button" class="btn btn-primary" (click)=selectedProject(item)> Project Name: {{item.projectName}}</button>
+                            </span>
+                            <br/>
+                        </strong>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="modalClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<button type="button" id="submitModalhide" class="btn btn-primary"  style="display: none;" data-toggle="modal" data-target="#submitModal"></button>
+<div class="modal fade" role="dialog" id="submitModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">{{modalHeading}}</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          {{modalBody}}
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)=resetButton()>Back To View Task</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<router-outlet></router-outlet>

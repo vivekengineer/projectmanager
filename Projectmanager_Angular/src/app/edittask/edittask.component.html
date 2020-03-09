@@ -1,0 +1,123 @@
+<div class="container">
+    <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+          <div class="col-xs-12">
+    <form >
+        <div class="row">
+            <label for="projectName" class="col-md-4">Project:</label>
+            <input type="text" class="col-md-5" id="searchProject" name="searchProject" #searchProject="ngModel" [(ngModel)]="projectName" disabled placeholder="Search Project">    
+            <button type="button" class="col-md-1  btn btn-danger" disabled style="border-radius: 45%;margin-left:20px" (click)=getProjectPopup()>Search</button>
+        </div>
+        <br>  
+      <div class="row">
+        <label for="task"  class="col-md-4" >Task</label>
+        <input class="col-md-5" type="text" [(ngModel)]="task.taskName"  name="task" id="task" required >
+      </div>
+      <br>
+      <div class="row">
+          <div class="col-md-9">
+              <input type="checkbox" align  id="projectSelection" tabindex="0" name="checkBoxSelect" [(ngModel)]="checkBoxSelect">
+              <label for="task"  >Parent Task</label>
+          </div>
+      </div>
+        <br>
+      
+      <div class="row">
+          <label for="task"  class="col-md-4" >Priority</label>
+          <input class="col-sm-2" type="range"  [(ngModel)]="task.priority" title="{{task.priority}}" name="priority" id="priority" required>
+          <label for="task"  class="col-md-1" >{{task.priority}}</label>
+      </div>
+        <br>
+      <div class="row">
+        <label for="parentTask" class="col-md-4" >Parent Task</label>
+        <input [disabled] = "!checkBoxSelect" class="col-md-5" type="text" [(ngModel)]="parentTaskName"   name="parentTaskName" id="parentTaskName" required>
+
+        <button [disabled] = "!checkBoxSelect" type="button" class="col-md-1  btn btn-danger" style="border-radius: 45%;margin-left:20px" (click)=getParentPopup()>Search</button>
+      </div>
+      <br>
+      <div class="row">
+        <label for="startDate" class="col-md-4" >Start Date</label>
+        <input class="col-md-2" type="date" [(ngModel)]="task.startDate"   name="startDate" id="startDate" required>
+        <label for="endDate" class="col-md-2" >End Date</label>
+        <input class="col-md-2" type="date" [(ngModel)]="task.endDate"   name="endDate" id="endDate" required>
+           
+     </div>
+     <br>
+     <div class="row">
+        <label for="user" class="col-md-4" >User:</label>
+        <input class="col-md-5" type="text" [(ngModel)]="userName"  disabled name="userName" id="userName" required>
+
+        <button type="button" class="col-md-1  btn btn-danger" disabled style="border-radius: 45%;margin-left:20px" (click)=getProjectPopup()>Search</button>
+      </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-5"></div>
+      <div class="col-md-6">
+      <button type="submit" class="btn btn-success" style="margin-right:20px" (click)="updateTask()">Update Task</button>  
+      <button type="cancel" routerLink="/viewtask" style="margin-left:20px" class="btn btn-primary">Cancel</button>
+      </div>
+    </div>
+      <br>
+      <br>
+    </form>
+    </div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+  <button type="button" id="userModalhide" class="btn btn-primary" style="display: none;" data-toggle="modal" data-target="#userModal"></button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="userModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Select Parent Task</h4>
+        </div>
+         <!-- Modal body -->
+      <div class="modal-body" style="height:450px; overflow-y: scroll">
+              <div class="row list-group-item" *ngFor="let item of parentsList">
+                      
+                      <div class="col-md-12" style="background-color: rgb(228, 224, 224);"  >
+                          <br/><strong>
+                          <span class="col-form-label"><button type="button" class="btn btn-primary" (click)=selectedParent(item)> Parent Task Name: {{item.parentTaskName}}</button></span><br/>
+                        </strong>
+                      </div>
+                      
+                  </div>  
+          </div>
+       
+        <div class="modal-footer">
+          <button id="modalClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <button type="button" id="submitModalhide" class="btn btn-primary"  style="display: none;" data-toggle="modal" data-target="#submitModal"></button>
+  <div class="modal fade" role="dialog" id="submitModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">{{modalHeading}}</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            {{modalBody}}
+          </div>
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" (click)=resetButton()>Back To Add Task</button>
+          </div>
+        </div>
+      </div>
+  </div>
+  <router-outlet></router-outlet>
